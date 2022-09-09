@@ -8,5 +8,5 @@ const Button = React.forwardRef((props,ref) => {
         </button>
     )
 })
-
+Button.displayName='Button';
 export default Button;
