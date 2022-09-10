@@ -51,17 +51,6 @@ export default function Art({data}) {
     }
   };
 
-  const downloadSvg = () => {
-    const svgInfo = new XMLSerializer().serializeToString(
-      document.querySelector("svg")
-    );
-    const base64Data = btoa(svgInfo);
-    let download = document.createElement("a");
-    document.body.appendChild(download);
-    download.setAttribute("href", "data:image/svg+xml;base64," + base64Data);
-    download.setAttribute("download", "coloring_book.svg");
-    download.click();
-  };
 
   return (
     <div>
@@ -71,15 +60,22 @@ export default function Art({data}) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <NavBar />
-      <div className="relative overflow-hidden min-h-[90vh] mb-20">
+      <div className="relative overflow-hidden min-h-[90vh]">
         <div
           id="art"
           className="flex flex-row mb-14 justify-center"
           dangerouslySetInnerHTML={{ __html: svgData }}
           ref={artRef}
         ></div>
-        <div className="w-full flex flex-row justify-center  items-center">
-          <div className="flex flex-col absolute -bottom-[390px] hover:bottom-0 self-center w-[525px]  duration-500 transition-all rounded-md bg-gray-500">
+        
+      </div>
+
+      <div className="md:flex hidden flex-row gap-4 justify-center m-4 mb-16">
+        <Button text="Clear Color" onClick={clearColors} />
+        <Button text="Random Color" onClick={fillWithRandomColors} />
+      </div>
+      <div className="w-full hidden md:flex  flex-row justify-center  items-center">
+          <div className="flex flex-col fixed -bottom-[390px] hover:bottom-0 self-center w-[525px]  duration-500 transition-all rounded-md bg-gray-500">
             <div
               className="bg-white text-black border border-black font-bold text-center py-2 my-2 px-3 mx-3 rounded-lg"
               style={{ backgroundColor: selectedColor }}
@@ -97,21 +93,9 @@ export default function Art({data}) {
               ))}
             </div>
           </div>
-        </div>
       </div>
-
-      <div className="md:flex hidden flex-row gap-4 justify-center m-4">
-        <Button text="Clear Color" onClick={clearColors} />
-        <Button text="Random Color" onClick={fillWithRandomColors} />
-        <label htmlFor="uploadIp">
-          <div className="border-none flex items-center gap-2 min-w-max  cursor-pointer rounded  bg-gray-900 text-white font-semibold px-5 py-3">
-            <ImFolderUpload color="#fff" />
-            <div>Upload</div>
-          </div>
-        </label>
-        <Button text="Download Svg" onClick={downloadSvg} />
-      </div>
-      <div className="flex md:hidden bg-black py-4 fixed bottom-0 left-0 px-6 w-full justify-between">
+      <div className="flex flex-col md:hidden bg-black fixed bottom-0 left-0 w-full" >
+      <div className="flex md:hidden z-40 bg-black py-4 px-6 w-full justify-between">
         <div
           className="text-white cursor-pointer bg-gray-500 p-2 rounded"
           onClick={clearColors}
@@ -124,13 +108,28 @@ export default function Art({data}) {
         >
           random
         </div>
-        <div
-          onClick={downloadSvg}
-          className="text-white cursor-pointer flex items-center gap-2 bg-gray-500 p-2 rounded"
-        >
-          <ImFolderDownload color="#FFFFFF" />
-          <div>download</div>
-        </div>
+      </div>
+      <div className="w-full flex flex-row justify-center  items-center">
+          <div className="flex flex-col absolute -bottom-[320px] hover:bottom-16 self-center w-[525px]  duration-500 transition-all rounded-md bg-gray-500">
+            <div
+              className="bg-white text-black border border-black font-bold text-center py-2 my-2 px-3 mx-3 rounded-lg"
+              style={{ backgroundColor: selectedColor }}
+            >
+              SELECT COLOR
+            </div>
+            <div className="flex flex-row flex-wrap justify-start gap-4 px-3 py-2 mx-3">
+              {colors.map((color, idx) => (
+                <div
+                  key={idx}
+                  onClick={() => setSelectedColor(color)}
+                  className="h-10 w-10 rounded-md shadow-md cursor-pointer hover:border hover:border-white"
+                  style={{ backgroundColor: color }}
+                ></div>
+              ))}
+            </div>
+          </div>
+      </div>
+      
       </div>
     </div>
   );
