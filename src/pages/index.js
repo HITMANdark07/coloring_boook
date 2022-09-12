@@ -26,7 +26,10 @@ export default function Home() {
   const [user, setUser] = useState(null);
   const [progress, setProgress] = useState(0);
   const [showShareModal, setShowShareModal] = useState(false);
+  const [showUp, setShowUp] = useState(false);
+  const [boxHeight, setBoxHeight] = useState(0);
   const artRef = useRef(null);
+  const selectColorRef = useRef(null);
   const router = useRouter();
   const storage = useMemo(() => getStorage(app));
   const [artId, setArtId] = useState(null);
@@ -160,10 +163,17 @@ export default function Home() {
 
   useEffect(() => {
     if (artRef.current) {
-      artRef.current?.children[0]?.setAttribute("width", "100%");
-      artRef.current?.children[0]?.setAttribute("height", "80vh");
+      artRef.current?.children[0]?.setAttribute("width", "100vw");
+      artRef.current?.children[0]?.setAttribute("height", "75vh");
     }
   }, [artRef.current]);
+
+  useEffect(() => {
+    if (selectColorRef.current) {
+      const width = selectColorRef.current.clientHeight;
+      setBoxHeight(width);
+    }
+  }, [selectColorRef.current]);
 
   return (
     <div>
@@ -216,10 +226,10 @@ export default function Home() {
           </div>
         </div>
       )}
-      <div className="relative overflow-hidden min-h-[80vh]">
+      <div className="relative overflow-hidden min-h-[75vh]">
         <div
           id="art"
-          className="flex flex-row justify-center"
+          className="flex w-full flex-row justify-center"
           dangerouslySetInnerHTML={{ __html: svgData }}
           ref={artRef}
         ></div>
@@ -301,10 +311,19 @@ export default function Home() {
           </div>
         </div>
         <div className="w-full flex flex-row justify-center  items-center">
-          <div className="flex flex-col absolute -bottom-[320px] hover:bottom-16 self-center w-[525px]  duration-500 transition-all rounded-md bg-gray-500">
+          <div
+            ref={selectColorRef}
+            className={`flex flex-col absolute ${
+              showUp ? "bottom-20" : `-bottom-[${boxHeight - 132}px]`
+            } self-center  duration-500 transition-all rounded-md bg-gray-500`}
+          >
             <div
               className="bg-white text-black border border-black font-bold text-center py-2 my-2 px-3 mx-3 rounded-lg"
               style={{ backgroundColor: selectedColor }}
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowUp(true);
+              }}
             >
               SELECT COLOR
             </div>
@@ -312,7 +331,10 @@ export default function Home() {
               {colors.map((color, idx) => (
                 <div
                   key={idx}
-                  onClick={() => setSelectedColor(color)}
+                  onClick={() => {
+                    setSelectedColor(color);
+                    setShowUp(false);
+                  }}
                   className="h-10 w-10 rounded-md shadow-md cursor-pointer hover:border hover:border-white"
                   style={{ backgroundColor: color }}
                 ></div>
