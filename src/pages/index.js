@@ -307,9 +307,7 @@ export default function Home() {
           <div
             ref={selectColorRef}
             className={`flex flex-col absolute ${
-              showUp
-                ? "bottom-20"
-                : `-bottom-[${selectColorRef.current?.clientHeight - 132}px]`
+              showUp ? "bottom-20" : `-bottom-[430px]`
             } self-center  duration-500 transition-all rounded-md bg-gray-500`}
           >
             <div
