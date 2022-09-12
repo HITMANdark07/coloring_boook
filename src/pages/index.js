@@ -168,13 +168,6 @@ export default function Home() {
     }
   }, [artRef.current]);
 
-  useEffect(() => {
-    if (selectColorRef.current) {
-      const width = selectColorRef.current.clientHeight;
-      setBoxHeight(width);
-    }
-  }, [selectColorRef.current]);
-
   return (
     <div>
       <Head>
@@ -310,11 +303,13 @@ export default function Home() {
             <div>download</div>
           </div>
         </div>
-        <div className="w-full flex flex-row justify-center  items-center">
+        <div className="w-full relative flex flex-row justify-center  items-center">
           <div
             ref={selectColorRef}
             className={`flex flex-col absolute ${
-              showUp ? "bottom-20" : `-bottom-[${boxHeight - 132}px]`
+              showUp
+                ? "bottom-20"
+                : `-bottom-[${selectColorRef.current?.clientHeight - 132}px]`
             } self-center  duration-500 transition-all rounded-md bg-gray-500`}
           >
             <div

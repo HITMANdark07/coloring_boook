@@ -61,14 +61,6 @@ export default function Art({data}) {
     }
   };
 
-  useEffect(() => {
-    if (selectColorRef.current) {
-      const width = selectColorRef.current.clientHeight;
-      setBoxHeight(width);
-    }
-  }, [selectColorRef.current]);
-
-
   return (
     <div>
       <Head>
@@ -130,7 +122,7 @@ export default function Art({data}) {
           <div
             ref={selectColorRef}
             className={`flex flex-col absolute ${
-              showUp ? "bottom-20" : `-bottom-[${boxHeight - 132}px]`
+              showUp ? "bottom-20" : `-bottom-[${selectColorRef.current?.clientHeight - 132}px]`
             } self-center  duration-500 transition-all rounded-md bg-gray-500`}
           >
             <div
