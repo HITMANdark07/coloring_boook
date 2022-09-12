@@ -11,7 +11,10 @@ import NavBar from "../../components/NavBar";
 export default function Art({data}) {
   const [selectedColor, setSelectedColor] = useState("#FFFFFF");
   const [svgData, setSvgData] = useState(data);
+  const [showUp, setShowUp] = useState(false);
+  const [boxHeight, setBoxHeight] = useState(0);
   const artRef = useRef(null);
+  const selectColorRef = useRef(null);
   const updateColor = useCallback(
     (element, color) => {
       element.setAttribute("fill", color ? color : selectedColor);
@@ -21,8 +24,8 @@ export default function Art({data}) {
 
   useEffect(() => {
     if (artRef.current) {
-      artRef.current?.children[0]?.setAttribute("width", "100%");
-      artRef.current?.children[0]?.setAttribute("height", "80vh");
+      artRef.current?.children[0]?.setAttribute("width", "100vw");
+      artRef.current?.children[0]?.setAttribute("height", "75vh");
     }
   }, [artRef.current]);
 
@@ -58,6 +61,13 @@ export default function Art({data}) {
     }
   };
 
+  useEffect(() => {
+    if (selectColorRef.current) {
+      const width = selectColorRef.current.clientHeight;
+      setBoxHeight(width);
+    }
+  }, [selectColorRef.current]);
+
 
   return (
     <div>
@@ -67,17 +77,17 @@ export default function Art({data}) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <NavBar />
-      <div className="relative overflow-hidden min-h-[80vh]">
+      <div className="relative overflow-hidden min-h-[75vh]">
         <div
           id="art"
-          className="flex flex-row mb-14 justify-center"
+          className="flex flex-row justify-center"
           dangerouslySetInnerHTML={{ __html: svgData }}
           ref={artRef}
         ></div>
         
       </div>
 
-      <div className="md:flex hidden flex-row gap-4 justify-center -mt-8 mb-20">
+      <div className="md:flex hidden flex-row gap-4 justify-center mt-1 mb-20">
         <Button text="Clear Color" onClick={clearColors} />
         <Button text="Random Color" onClick={fillWithRandomColors} />
       </div>
@@ -101,26 +111,35 @@ export default function Art({data}) {
             </div>
           </div>
       </div>
-      <div className="flex flex-col md:hidden bg-black fixed bottom-0 left-0 w-full" >
-      <div className="flex md:hidden z-40 bg-black py-4 px-6 w-full justify-between">
-        <div
-          className="text-white cursor-pointer bg-gray-500 p-2 rounded"
-          onClick={clearColors}
-        >
-          clear
+      <div className="flex flex-col md:hidden bg-black fixed bottom-0 left-0 w-full">
+        <div className="flex md:hidden z-50 bg-black py-4 px-6 w-full justify-between">
+          <div
+            className="text-white cursor-pointer z-50 bg-gray-500 p-2 rounded"
+            onClick={clearColors}
+          >
+            clear
+          </div>
+          <div
+            className="text-white cursor-pointer z-50 bg-gray-500 p-2 rounded"
+            onClick={fillWithRandomColors}
+          >
+            random
+          </div>
         </div>
-        <div
-          className="text-white cursor-pointer bg-gray-500 p-2 rounded"
-          onClick={fillWithRandomColors}
-        >
-          random
-        </div>
-      </div>
-      <div className="w-full flex flex-row justify-center  items-center">
-          <div className="flex flex-col absolute -bottom-[320px] hover:bottom-16 self-center w-[525px]  duration-500 transition-all rounded-md bg-gray-500">
+        <div className="w-full flex flex-row justify-center  items-center">
+          <div
+            ref={selectColorRef}
+            className={`flex flex-col absolute ${
+              showUp ? "bottom-20" : `-bottom-[${boxHeight - 132}px]`
+            } self-center  duration-500 transition-all rounded-md bg-gray-500`}
+          >
             <div
               className="bg-white text-black border border-black font-bold text-center py-2 my-2 px-3 mx-3 rounded-lg"
               style={{ backgroundColor: selectedColor }}
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowUp(true);
+              }}
             >
               SELECT COLOR
             </div>
@@ -128,15 +147,17 @@ export default function Art({data}) {
               {colors.map((color, idx) => (
                 <div
                   key={idx}
-                  onClick={() => setSelectedColor(color)}
+                  onClick={() => {
+                    setSelectedColor(color);
+                    setShowUp(false);
+                  }}
                   className="h-10 w-10 rounded-md shadow-md cursor-pointer hover:border hover:border-white"
                   style={{ backgroundColor: color }}
                 ></div>
               ))}
             </div>
           </div>
-      </div>
-      
+        </div>
       </div>
     </div>
   );
