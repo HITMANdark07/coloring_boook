@@ -157,6 +157,14 @@ export default function Home() {
     // };
     // fr.readAsText(file);
   };
+
+  useEffect(() => {
+    if (artRef.current) {
+      artRef.current?.children[0]?.setAttribute("width", "100%");
+      artRef.current?.children[0]?.setAttribute("height", "80vh");
+    }
+  }, [artRef.current]);
+
   return (
     <div>
       <Head>
@@ -208,21 +216,21 @@ export default function Home() {
           </div>
         </div>
       )}
-      <div className="relative overflow-hidden min-h-[90vh]">
+      <div className="relative overflow-hidden min-h-[80vh]">
         <div
           id="art"
-          className="flex flex-row mb-14 justify-center"
+          className="flex flex-row justify-center"
           dangerouslySetInnerHTML={{ __html: svgData }}
           ref={artRef}
         ></div>
       </div>
-      <div className="flex w-full mb-20 mx-4 lg:w-1/2 gap-4 lg:mx-auto items-center flex-col self-center justify-center">
+      <div className="flex w-full mx-2 lg:w-1/2 gap-4 lg:mx-auto items-center flex-col self-center justify-center">
         {progress > 0 && <div className="text-2xl">{progress}%</div>}
         <div
           className={`lg:w-[${progress}%] self-center bg-blue-600 h-4`}
         ></div>
       </div>
-      <div className="md:flex hidden flex-row gap-4 justify-center m-4 mb-16">
+      <div className="md:flex hidden flex-row gap-4 justify-center -mt-3 mb-20 ">
         <Button text="Clear Color" onClick={clearColors} />
         <Button text="Random Color" onClick={fillWithRandomColors} />
         <label htmlFor="uploadIp">

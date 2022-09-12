@@ -20,6 +20,13 @@ export default function Art({data}) {
   );
 
   useEffect(() => {
+    if (artRef.current) {
+      artRef.current?.children[0]?.setAttribute("width", "100%");
+      artRef.current?.children[0]?.setAttribute("height", "80vh");
+    }
+  }, [artRef.current]);
+
+  useEffect(() => {
     const paths = document.getElementsByTagName("path");
     for (let i = 0; i < paths?.length; i++) {
       paths[i].classList.add("cursor-pointer");
@@ -60,7 +67,7 @@ export default function Art({data}) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <NavBar />
-      <div className="relative overflow-hidden min-h-[90vh]">
+      <div className="relative overflow-hidden min-h-[80vh]">
         <div
           id="art"
           className="flex flex-row mb-14 justify-center"
@@ -70,7 +77,7 @@ export default function Art({data}) {
         
       </div>
 
-      <div className="md:flex hidden flex-row gap-4 justify-center m-4 mb-16">
+      <div className="md:flex hidden flex-row gap-4 justify-center -mt-8 mb-20">
         <Button text="Clear Color" onClick={clearColors} />
         <Button text="Random Color" onClick={fillWithRandomColors} />
       </div>

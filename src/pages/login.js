@@ -116,13 +116,13 @@ const LoginPage = () => {
           >
             {login ? "LOGIN" : "SIGNUP"}
           </button>
-          <div
+          {/* <div
             className="text-blue-400 text-sm cursor-pointer"
             onClick={toggleLogin}
           >
             {login ? "Don't" : "Already"} have an Account?{" "}
             {login ? "Signup" : "Login"} now
-          </div>
+          </div> */}
         </form>
       </div>
     </>
