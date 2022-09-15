@@ -27,7 +27,6 @@ export default function Home() {
   const [progress, setProgress] = useState(0);
   const [showShareModal, setShowShareModal] = useState(false);
   const [showUp, setShowUp] = useState(false);
-  const [boxHeight, setBoxHeight] = useState(0);
   const artRef = useRef(null);
   const selectColorRef = useRef(null);
   const router = useRouter();
@@ -166,7 +165,7 @@ export default function Home() {
       artRef.current?.children[0]?.setAttribute("width", "100vw");
       artRef.current?.children[0]?.setAttribute("height", "75vh");
     }
-  }, [artRef.current]);
+  }, [artRef.current, svgData]);
 
   return (
     <div>
