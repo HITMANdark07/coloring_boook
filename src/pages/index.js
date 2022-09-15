@@ -66,7 +66,7 @@ export default function Home() {
     return () => {
       for (let i = 0; i < paths?.length; i++) {
         paths[i].removeEventListener("click", () => {
-          console.log(paths[i], "remove");
+          console.log(i, "remove");
         });
       }
     };
@@ -89,7 +89,7 @@ export default function Home() {
 
   const downloadSvg = () => {
     const svgInfo = new XMLSerializer().serializeToString(
-      document.querySelector("svg")
+      artRef.current.children[0]
     );
     const base64Data = btoa(svgInfo);
     let download = document.createElement("a");
